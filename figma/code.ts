@@ -12,26 +12,57 @@ figma.showUI(__html__, {
     height: 552
 })
 
+async function getSelectedImages() {
+    // 获取当前选中的所有节点
+    const selection = figma.currentPage.selection
+    // 过滤选中的节点，找出包含图片填充的节点
+    const imageNodes = selection
+        .filter((node) => {
+            if (node.type === 'RECTANGLE' || node.type === 'FRAME') {
+                const fills = node.fills
+
+                if (fills && Array.isArray(fills)) {
+                    // 速度极快
+                    return fills.some((fill) => fill.type === 'IMAGE')
+                }
+            }
+            return false
+        })
+        .filter(Boolean)
+    const imageInfos = await Promise.all(
+        imageNodes.map(async (node) => {
+            const fills = (node as any).fills
+            const imageFill = fills.find((fill) => fill.type === 'IMAGE')
+            if (imageFill) {
+                const image = figma.getImageByHash(imageFill.imageHash)
+                if (!image) {
+                    return null
+                }
+                const bytes = await image.getBytesAsync()
+                const base64 = figma.base64Encode(bytes)
+                console.log(2222222222)
+                return {
+                    id: node.id,
+                    name: node.name,
+                    base64: base64
+                }
+            }
+        })
+    )
+
+    // 将包含图片的节点信息发送到 UI
+    figma.ui.postMessage({
+        type: 'selected-images',
+        images: imageInfos
+    })
+}
+
 // Calls to "parent.postMessage" from within the HTML page will trigger this
 // callback. The callback will be passed the "pluginMessage" property of the
 // posted message.
 figma.ui.onmessage = (msg) => {
-    // One way of distinguishing between different types of messages sent from
-    // your HTML page is to use an object with a "type" property like this.
-    if (msg.type === 'create-rectangles') {
-        const nodes: SceneNode[] = []
-        for (let i = 0; i < msg.count; i++) {
-            const rect = figma.createRectangle()
-            rect.x = i * 150
-            rect.fills = [{ type: 'SOLID', color: { r: 1, g: 0.5, b: 0 } }]
-            figma.currentPage.appendChild(rect)
-            nodes.push(rect)
-        }
-        figma.currentPage.selection = nodes
-        figma.viewport.scrollAndZoomIntoView(nodes)
+    if (msg.type === 'get-selected-images') {
+        getSelectedImages()
     }
-
-    // Make sure to close the plugin when you're done. Otherwise the plugin will
-    // keep running, which shows the cancel button at the bottom of the screen.
-    figma.closePlugin()
+    // figma.closePlugin()
 }

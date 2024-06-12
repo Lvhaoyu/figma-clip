@@ -3,26 +3,36 @@ import { Button } from 'ant-design-vue'
 import { ArrowForward, Eliminate } from '@/icons'
 import Board from '@/components/board.vue'
 
-const count = ref(5)
+const img = ref('')
+onMounted(() => {
+    parent.postMessage({ pluginMessage: { type: 'get-selected-images' } }, '*')
+})
 
-const create = () => {
-    parent.postMessage({ pluginMessage: { type: 'create-rectangles', count: count.value } }, '*')
+// 接收来自插件代码的消息
+onmessage = (event) => {
+    const message = event.data.pluginMessage
+    if (message.type === 'selected-images') {
+        const images = message.images
+        if (images) {
+            img.value = images[0].base64
+        }
+    }
 }
 
-const cancel = () => {
-    parent.postMessage({ pluginMessage: { type: 'cancel' } }, '*')
-}
+const btnDisabled = computed(() => {
+    return !img.value
+})
 </script>
 
 <template>
     <div :class="$style['container']">
-        <div :class="$style['body']"><Board /></div>
+        <div :class="$style['body']"><Board :img="img" /></div>
         <div :class="$style['footer']">
             <div :class="$style['content']">
                 <span>🥝 剩余 5 次</span><span>加购次数 <ArrowForward :class="['buy-icon']" /></span>
             </div>
             <div :class="$style['operate']">
-                <Button :class="$style['operate-btn']" type="primary" size="large"
+                <Button :class="$style['operate-btn']" type="primary" size="large" :disabled="btnDisabled"
                     ><Eliminate :class="$style['operate-icon']" />一键抠图（消耗 1 次）</Button
                 >
             </div>

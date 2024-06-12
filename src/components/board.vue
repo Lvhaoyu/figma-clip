@@ -1,9 +1,11 @@
 <script setup lang="ts">
-import { computed } from 'vue'
 const props = defineProps({ img: String })
 
 const isRunning = computed(() => {
     return !!props.img
+})
+const url = computed(() => {
+    return `data:image/png;base64,${props.img}`
 })
 </script>
 <template>
@@ -14,7 +16,8 @@ const isRunning = computed(() => {
             [$style['board-running']]: isRunning
         }"
     >
-        <img src="../assets/demo.png" alt="demo" v-if="!isRunning" />
+        <img src="../assets/demo.png" alt="demo" v-if="!isRunning" draggable="false" />
+        <img :src="url" alt="clip-running" v-else />
     </div>
 </template>
 
@@ -27,19 +30,22 @@ const isRunning = computed(() => {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+.board-running {
+    width: 100%;
+    height: 100%;
+    .mosaic-background();
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+}
 
+.board-empty {
     img {
         width: 25%;
         height: auto;
     }
-}
-.board-empty {
-    width: 100%;
-    height: 100%;
-    .mosaic-background();
-}
-
-.board-running {
     width: 100%;
     height: 100%;
     background-size: 100%; /* 背景图像宽度设置为容器宽度的 100% */
