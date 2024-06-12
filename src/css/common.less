@@ -1,0 +1,16 @@
+/* 单行文本溢出省略 */
+.ellipsis() {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* 马赛克背景，png 透明背景图片填充灰白格背景使用 */
+@mosaic-color-dark: var(--mosaic-color-dark, #d9dcdf);
+@mosaic-color-light: var(--mosaic-color-light, #f1f2f4);
+.mosaic-background() {
+    background: linear-gradient(45deg, @mosaic-color-dark 25%, transparent 0, transparent 75%, @mosaic-color-dark 0, @mosaic-color-dark),
+        linear-gradient(45deg, @mosaic-color-dark 25%, @mosaic-color-light 0, @mosaic-color-light 75%, @mosaic-color-dark 0, @mosaic-color-dark);
+    background-position: 0 0, 8px 8px;
+    background-size: 16px 16px;
+}

@@ -4,18 +4,22 @@ import { viteSingleFile } from 'vite-plugin-singlefile'
 
 import Unocss from 'unocss/vite'
 import { presetAttributify, presetUno } from 'unocss'
+import { resolve } from 'path'
 
 import AutoImport from 'unplugin-auto-import/vite'
 
 // https://vitejs.dev/config/
 export default defineConfig({
+    base: './',
+    resolve: {
+        alias: {
+            '@': resolve(__dirname, './src')
+        }
+    },
     plugins: [
         Unocss({
             mode: 'dist-chunk',
-            presets: [
-                presetAttributify(), 
-                presetUno()
-            ],
+            presets: [presetAttributify(), presetUno()]
             // shortcuts: {
             //     'c-r': 'color-red'
             // }
@@ -30,6 +34,14 @@ export default defineConfig({
         vue(),
         viteSingleFile()
     ],
+    css: {
+        // 预处理器配置项
+        preprocessorOptions: {
+            less: {
+                math: 'always'
+            }
+        }
+    },
     build: {
         // https://vitejs.cn/config/#build-csscodesplit
         cssCodeSplit: false,

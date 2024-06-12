@@ -1,10 +1,12 @@
 {
-  "name": "clip",
-  "id": "your plugin id",
-  "api": "1.0.0",
-  "main": "dist/code.js",
-  "ui": "dist/index.html",
-  "editorType": [
-    "figma"
-  ]
+    "name": "Bg Remove",
+    "id": "15104232358",
+    "api": "1.0.0",
+    "main": "dist/code.js",
+    "ui": "dist/index.html",
+    "documentAccess": "dynamic-page",
+    "networkAccess": {
+        "allowedDomains": ["https://s2.loli.net"]
+    },
+    "editorType": ["figma"]
 }
