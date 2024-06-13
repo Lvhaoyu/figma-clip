@@ -1,7 +1,6 @@
 <script setup lang="ts">
 const props = defineProps({ img: String })
 
-const imgRef = ref<null | HTMLImageElement>(null)
 const isRunning = computed(() => {
     return !!props.img
 })
@@ -18,7 +17,7 @@ const url = computed(() => {
         }"
     >
         <img src="../assets/demo.png" alt="demo" v-if="!isRunning" draggable="false" />
-        <img :src="url" alt="clip-running" v-else draggable="true" ref="imgRef" />
+        <img :src="url" alt="clip-running" v-else draggable="true" />
     </div>
 </template>
 
