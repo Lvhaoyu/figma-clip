@@ -2,6 +2,7 @@
 import { Button } from 'ant-design-vue'
 import { ArrowForward, Eliminate } from '@/icons'
 import Board from '@/components/board.vue'
+import { base64ToUint8Array } from './utils'
 
 const img = ref('')
 onMounted(() => {
@@ -22,17 +23,6 @@ onmessage = (event) => {
 const btnDisabled = computed(() => {
     return !img.value
 })
-
-// Base64 转 Uint8Array
-const base64ToUint8Array = (base64: string): Uint8Array => {
-    const binaryString = atob(base64)
-    const len = binaryString.length
-    const bytes = new Uint8Array(len)
-    for (let i = 0; i < len; i++) {
-        bytes[i] = binaryString.charCodeAt(i)
-    }
-    return bytes
-}
 
 const handleClickBtn = () => {
     parent.postMessage({ pluginMessage: { type: 'replace-image', imageData: base64ToUint8Array(img.value) } }, '*')

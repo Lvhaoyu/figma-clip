@@ -12,10 +12,12 @@
     },
     "dependencies": {
         "ant-design-vue": "4.x",
+        "lodash-es": "^4.17.21",
         "vue": "^3.2.25"
     },
     "devDependencies": {
         "@figma/plugin-typings": "^1.95.0",
+        "@types/lodash-es": "^4.17.12",
         "@vitejs/plugin-vue": "^2.3.1",
         "less": "^4.2.0",
         "path": "^0.12.7",
