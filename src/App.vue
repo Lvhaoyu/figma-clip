@@ -22,6 +22,21 @@ onmessage = (event) => {
 const btnDisabled = computed(() => {
     return !img.value
 })
+
+// Base64 转 Uint8Array
+const base64ToUint8Array = (base64: string): Uint8Array => {
+    const binaryString = atob(base64)
+    const len = binaryString.length
+    const bytes = new Uint8Array(len)
+    for (let i = 0; i < len; i++) {
+        bytes[i] = binaryString.charCodeAt(i)
+    }
+    return bytes
+}
+
+const handleClickBtn = () => {
+    parent.postMessage({ pluginMessage: { type: 'replace-image', imageData: base64ToUint8Array(img.value) } }, '*')
+}
 </script>
 
 <template>
@@ -32,7 +47,7 @@ const btnDisabled = computed(() => {
                 <span>🥝 剩余 5 次</span><span>加购次数 <ArrowForward :class="['buy-icon']" /></span>
             </div>
             <div :class="$style['operate']">
-                <Button :class="$style['operate-btn']" type="primary" size="large" :disabled="btnDisabled"
+                <Button :class="$style['operate-btn']" type="primary" size="large" :disabled="btnDisabled" @click="handleClickBtn"
                     ><Eliminate :class="$style['operate-icon']" />一键抠图（消耗 1 次）</Button
                 >
             </div>

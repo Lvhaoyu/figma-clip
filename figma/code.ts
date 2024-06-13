@@ -12,6 +12,10 @@ figma.showUI(__html__, {
     height: 552
 })
 
+function clone(val) {
+    return JSON.parse(JSON.stringify(val))
+}
+
 async function getSelectedImages() {
     // 获取当前选中的所有节点
     const selection = figma.currentPage.selection
@@ -29,6 +33,8 @@ async function getSelectedImages() {
             return false
         })
         .filter(Boolean)
+        .slice(0, 1)
+
     const imageInfos = await Promise.all(
         imageNodes.map(async (node) => {
             const fills = (node as any).fills
@@ -40,7 +46,6 @@ async function getSelectedImages() {
                 }
                 const bytes = await image.getBytesAsync()
                 const base64 = figma.base64Encode(bytes)
-                console.log(2222222222)
                 return {
                     id: node.id,
                     name: node.name,
@@ -64,5 +69,26 @@ figma.ui.onmessage = (msg) => {
     if (msg.type === 'get-selected-images') {
         getSelectedImages()
     }
+    if (msg.type === 'replace-image') {
+        const { imageData } = msg
+
+        const nodes = figma.currentPage.selection
+        if (nodes.length === 0) {
+            figma.notify('Please select an image frame.')
+            return
+        }
+        const image = figma.createImage(imageData)
+
+        for (const node of nodes) {
+            if (node.type === 'RECTANGLE' && node.fills.length > 0 && node.fills[0].type === 'IMAGE') {
+                const newFills = clone(node.fills)
+                newFills[0].imageHash = image.hash
+                node.fills = newFills
+            }
+        }
+
+        figma.notify('Image replaced successfully!')
+    }
+
     // figma.closePlugin()
 }

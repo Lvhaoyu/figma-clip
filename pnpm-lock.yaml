@@ -16,7 +16,7 @@ importers:
         version: 3.4.27(typescript@4.9.5)
     devDependencies:
       '@figma/plugin-typings':
-        specifier: ^1.44.0
+        specifier: ^1.95.0
         version: 1.95.0
       '@vitejs/plugin-vue':
         specifier: ^2.3.1
