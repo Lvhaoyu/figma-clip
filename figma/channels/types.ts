@@ -7,5 +7,5 @@ interface IMsg extends msg {}
 export interface IMessageChannel {
     getName(): string
 
-    handle(msg: IMsg): void
+    handle(msg: IMsg): any
 }

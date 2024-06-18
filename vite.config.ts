@@ -47,6 +47,7 @@ export default defineConfig({
         cssCodeSplit: false,
         // https://vitejs.cn/config/#build-assetsinlinelimit
         assetsInlineLimit: 100000000,
+        chunkSizeWarningLimit: 100000000,
         rollupOptions: {
             input: {
                 index: 'index.html',

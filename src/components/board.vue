@@ -1,11 +1,13 @@
 <script setup lang="ts">
+import { base64ToImage } from '@/utils'
+
 const props = defineProps({ img: String })
 
 const isRunning = computed(() => {
     return !!props.img
 })
 const url = computed(() => {
-    return `data:image/png;base64,${props.img}`
+    if (props.img) return base64ToImage(props.img)
 })
 </script>
 <template>

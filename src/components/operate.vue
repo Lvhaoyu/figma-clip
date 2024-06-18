@@ -1,15 +1,16 @@
 <script setup lang="ts">
 import { Button } from 'ant-design-vue'
 import { ArrowForward, Eliminate } from '@/icons'
-import { base64ToUint8Array } from '../utils'
+import { base64ToImage } from '@/utils'
 const props = defineProps({ img: { type: String, default: '' } })
 
 const btnDisabled = computed(() => {
     return !props.img
 })
 
-const handleClickBtn = () => {
-    parent.postMessage({ pluginMessage: { type: 'replace-image', imageData: base64ToUint8Array(props.img) } }, '*')
+const handleClickBtn = async () => {
+    parent.postMessage({ pluginMessage: { type: 'remove-background', imageData: base64ToImage(props.img) } }, '*')
+    // parent.postMessage({ pluginMessage: { type: 'replace-image', imageData: base64ToUint8Array(props.img) } }, '*')
 }
 </script>
 

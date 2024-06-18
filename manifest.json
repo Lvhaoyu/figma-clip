@@ -6,7 +6,7 @@
     "ui": "dist/index.html",
     "documentAccess": "dynamic-page",
     "networkAccess": {
-        "allowedDomains": ["https://s2.loli.net"]
+        "allowedDomains": ["https://189966.xyz"]
     },
     "editorType": ["figma"]
 }

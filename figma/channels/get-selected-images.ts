@@ -1,3 +1,5 @@
+/// <reference types="@figma/plugin-typings" />
+
 import { IMessageChannel } from './types'
 import { getSelectedImages } from './utils'
 
