@@ -11,6 +11,7 @@
         "preview": "vite preview"
     },
     "dependencies": {
+        "@imgly/background-removal": "1.4.5",
         "ant-design-vue": "4.x",
         "lodash-es": "^4.17.21",
         "vue": "^3.2.25"

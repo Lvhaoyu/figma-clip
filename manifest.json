@@ -1,12 +1,13 @@
 {
     "name": "Bg Remove",
-    "id": "15104232358",
+    "id": "1117699210834344763",
     "api": "1.0.0",
     "main": "dist/code.js",
     "ui": "dist/index.html",
+    "editorType": ["figma"],
     "documentAccess": "dynamic-page",
     "networkAccess": {
-        "allowedDomains": ["https://189966.xyz"]
-    },
-    "editorType": ["figma"]
+        "allowedDomains": ["https://figma.com", "https://189966.xyz"],
+        "devAllowedDomains": ["http://localhost:3000"]
+    }
 }

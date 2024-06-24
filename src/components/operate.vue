@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Button } from 'ant-design-vue'
 import { ArrowForward, Eliminate } from '@/icons'
-import { base64ToImage } from '@/utils'
+import { base64ToImage, base64ToUint8Array, removeBg, uint8ArrayToBase64 } from '@/utils'
 const props = defineProps({ img: { type: String, default: '' } })
 
 const btnDisabled = computed(() => {
@@ -9,8 +9,16 @@ const btnDisabled = computed(() => {
 })
 
 const handleClickBtn = async () => {
-    parent.postMessage({ pluginMessage: { type: 'remove-background', imageData: base64ToImage(props.img) } }, '*')
-    // parent.postMessage({ pluginMessage: { type: 'replace-image', imageData: base64ToUint8Array(props.img) } }, '*')
+    const data: Blob = await removeBg(base64ToImage(props.img))
+    data.arrayBuffer()
+        .then((arrayBuffer) => {
+            const uint8Array = new Uint8Array(arrayBuffer)
+            const base64String = uint8ArrayToBase64(uint8Array)
+            parent.postMessage({ pluginMessage: { type: 'replace-image', imageData: base64ToUint8Array(base64String) } }, '*')
+        })
+        .catch((error) => {
+            console.error('Error converting Blob to ArrayBuffer:', error)
+        })
 }
 </script>
 
