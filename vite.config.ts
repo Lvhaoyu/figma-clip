@@ -1,9 +1,6 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { viteSingleFile } from 'vite-plugin-singlefile'
-
-import Unocss from 'unocss/vite'
-import { presetAttributify, presetUno } from 'unocss'
 import { resolve } from 'path'
 
 import AutoImport from 'unplugin-auto-import/vite'
@@ -17,13 +14,6 @@ export default defineConfig({
         }
     },
     plugins: [
-        Unocss({
-            mode: 'dist-chunk',
-            presets: [presetAttributify(), presetUno()]
-            // shortcuts: {
-            //     'c-r': 'color-red'
-            // }
-        }),
         AutoImport({
             imports: [
                 // presets
