@@ -1,9 +1,9 @@
-import imglyRemoveBackground, { Config } from '@imgly/background-removal'
+import { removeBackground, Config } from '@imgly/background-removal'
 
 let config: Config = {
-    model: 'medium',
     debug: true,
     proxyToWorker: false,
+    device: 'gpu',
     publicPath: 'https://189966.xyz', // path to the wasm files
     progress: (key, current, total) => {
         console.log(`Progress for ${key}: ${current}/${total}`)
@@ -11,7 +11,7 @@ let config: Config = {
 }
 
 export const removeBg = async (image: string) => {
-    return imglyRemoveBackground(image, config).then((blob: Blob) => {
+    return removeBackground(image, config).then((blob: Blob) => {
         return blob
     })
 }

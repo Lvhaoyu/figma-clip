@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { base64ToImage } from '@/utils'
+import { base64ToImage } from '～/utils'
 
 const props = defineProps({ img: { type: String, default: '' }, loading: { type: Boolean, default: false } })
 
@@ -25,7 +25,7 @@ const url = computed(() => {
 </template>
 
 <style module lang="less">
-@import '@/css/common.less';
+@import '～/css/common.less';
 
 .board {
     width: 100%;
@@ -42,8 +42,9 @@ const url = computed(() => {
     height: 100%;
     .mosaic-background();
     img {
-        max-width: 100%;
-        height: auto;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
     }
 }
 
@@ -56,7 +57,7 @@ const url = computed(() => {
     height: 100%;
     background-size: 100%; /* 背景图像宽度设置为容器宽度的 100% */
     background-repeat: no-repeat; /* 防止图像重复 */
-    background-image: url('@/assets/work-space.png');
+    background-image: url('～/assets/work-space.png');
     box-shadow: 0px 43px 132px 10px rgba(0, 0, 0, 0.2);
 }
 @keyframes moveDown {

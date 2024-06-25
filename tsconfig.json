@@ -23,7 +23,7 @@
     "jsxImportSource": "vue",
     "baseUrl": ".",
     "paths": {
-      "@/*": [
+      "～/*": [
         "src/*"
       ]
     }

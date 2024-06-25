@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import Board from '@/components/board.vue'
-import Operate from '@/components/operate.vue'
+import Board from '～/components/board.vue'
+import Operate from '～/components/operate.vue'
 
 const img = ref('')
 const loading = ref(false)

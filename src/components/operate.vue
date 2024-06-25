@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Button, message } from 'ant-design-vue'
-import { ArrowForward, Eliminate } from '@/icons'
-import { base64ToImage, base64ToUint8Array, removeBg, uint8ArrayToBase64 } from '@/utils'
+import { ArrowForward, Eliminate } from '～/icons'
+import { base64ToImage, base64ToUint8Array, removeBg, uint8ArrayToBase64 } from '～/utils'
 
 const props = defineProps({ img: { type: String, default: '' }, loading: { type: Boolean, default: false } })
 const emits = defineEmits(['change-loading'])
@@ -26,6 +26,7 @@ const handleClickBtn = async () => {
                 throw new Error('Error converting Blob to ArrayBuffer:', error)
             })
     } catch (error) {
+        console.log('Error:', error)
         emits('change-loading', false)
         message.warn('抠图失败，请重试')
     }
@@ -37,7 +38,7 @@ const handleClickBtn = async () => {
         <span>🥝 剩余 5 次</span><span>加购次数 <ArrowForward :class="['buy-icon']" /></span>
     </div>
     <div :class="$style['operate']">
-        <Button :class="$style['operate-btn']" type="primary" size="large" :disabled="btnDisabled" @click="handleClickBtn" :loading="loading"
+        <Button :class="$style['operate-btn']" type="primary" size="large" :disabled="false" @click="handleClickBtn" :loading="loading"
             ><Eliminate :class="$style['operate-icon']" />一键抠图（消耗 1 次）</Button
         >
     </div>
