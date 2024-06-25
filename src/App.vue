@@ -3,9 +3,14 @@ import Board from '@/components/board.vue'
 import Operate from '@/components/operate.vue'
 
 const img = ref('')
+const loading = ref(false)
 onMounted(() => {
     parent.postMessage({ pluginMessage: { type: 'get-selected-images' } }, '*')
 })
+
+const changeLoading = (status: boolean) => {
+    loading.value = status
+}
 
 // 接收来自插件代码的消息
 onmessage = (event) => {
@@ -21,9 +26,9 @@ onmessage = (event) => {
 
 <template>
     <div :class="$style['container']">
-        <div :class="$style['body']"><Board :img="img" /></div>
+        <div :class="$style['body']"><Board :img="img" :loading="loading" /></div>
         <div :class="$style['footer']">
-            <Operate :img="img" />
+            <Operate :img="img" :loading="loading" @change-loading="changeLoading" />
         </div>
     </div>
 </template>

@@ -1,24 +1,34 @@
 <script setup lang="ts">
-import { Button } from 'ant-design-vue'
+import { Button, message } from 'ant-design-vue'
 import { ArrowForward, Eliminate } from '@/icons'
 import { base64ToImage, base64ToUint8Array, removeBg, uint8ArrayToBase64 } from '@/utils'
-const props = defineProps({ img: { type: String, default: '' } })
+
+const props = defineProps({ img: { type: String, default: '' }, loading: { type: Boolean, default: false } })
+const emits = defineEmits(['change-loading'])
 
 const btnDisabled = computed(() => {
     return !props.img
 })
 
 const handleClickBtn = async () => {
-    const data: Blob = await removeBg(base64ToImage(props.img))
-    data.arrayBuffer()
-        .then((arrayBuffer) => {
-            const uint8Array = new Uint8Array(arrayBuffer)
-            const base64String = uint8ArrayToBase64(uint8Array)
-            parent.postMessage({ pluginMessage: { type: 'replace-image', imageData: base64ToUint8Array(base64String) } }, '*')
-        })
-        .catch((error) => {
-            console.error('Error converting Blob to ArrayBuffer:', error)
-        })
+    try {
+        emits('change-loading', true)
+        const data: Blob = await removeBg(base64ToImage(props.img))
+        data.arrayBuffer()
+            .then((arrayBuffer) => {
+                const uint8Array = new Uint8Array(arrayBuffer)
+                const base64String = uint8ArrayToBase64(uint8Array)
+                parent.postMessage({ pluginMessage: { type: 'replace-image', imageData: base64ToUint8Array(base64String) } }, '*')
+                emits('change-loading', false)
+                message.success('抠图成功，图片已经替换')
+            })
+            .catch((error) => {
+                throw new Error('Error converting Blob to ArrayBuffer:', error)
+            })
+    } catch (error) {
+        emits('change-loading', false)
+        message.warn('抠图失败，请重试')
+    }
 }
 </script>
 
@@ -27,7 +37,7 @@ const handleClickBtn = async () => {
         <span>🥝 剩余 5 次</span><span>加购次数 <ArrowForward :class="['buy-icon']" /></span>
     </div>
     <div :class="$style['operate']">
-        <Button :class="$style['operate-btn']" type="primary" size="large" :disabled="btnDisabled" @click="handleClickBtn"
+        <Button :class="$style['operate-btn']" type="primary" size="large" :disabled="btnDisabled" @click="handleClickBtn" :loading="loading"
             ><Eliminate :class="$style['operate-icon']" />一键抠图（消耗 1 次）</Button
         >
     </div>
@@ -40,6 +50,7 @@ const handleClickBtn = async () => {
 }
 
 .content {
+    user-select: none;
     .flex();
     span:first-of-type {
         color: var(--static-color-white, #fff);
@@ -51,6 +62,9 @@ const handleClickBtn = async () => {
         .flex();
         color: var(--text-color-emphasis, #4172fa);
         font: var(--text-p1-bold);
+        &:hover {
+            cursor: pointer;
+        }
 
         .buy-icon {
             font-size: 16px;
