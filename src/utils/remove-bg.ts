@@ -1,7 +1,7 @@
 import { removeBackground, Config } from '@imgly/background-removal'
 
 let config: Config = {
-    debug: true,
+    debug: false,
     proxyToWorker: false,
     device: 'gpu',
     publicPath: 'https://189966.xyz', // path to the wasm files
