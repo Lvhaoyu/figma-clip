@@ -1,6 +1,6 @@
 {
     "name": "Bg Remove",
-    "id": "1117699210834344763",
+    "id": "202407120641",
     "api": "1.0.0",
     "main": "dist/code.js",
     "ui": "dist/index.html",
